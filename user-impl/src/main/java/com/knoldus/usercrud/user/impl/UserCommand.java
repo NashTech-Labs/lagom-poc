@@ -50,4 +50,78 @@ public interface UserCommand extends Jsonable {
                     .toString();
         }
     }
+
+    @Immutable
+    @JsonDeserialize
+    final class UpdateUser implements UserCommand, PersistentEntity.ReplyType<Done> {
+        public final User user;
+
+        @JsonCreator
+        public UpdateUser(final User user) {
+            this.user = Preconditions.checkNotNull(user);
+        }
+
+        @Override
+        public int hashCode() {
+            return user.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object another) {
+            if(this == another) {
+                return true;
+            }
+            if(another instanceof AddNewUser) {
+                AddNewUser newUser = (AddNewUser) another;
+                return this.user.equals(newUser.user);
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                    .append("user", this.user)
+                    .toString();
+        }
+    }
+
+    @Immutable
+    @JsonDeserialize
+    final class DeleteUser implements UserCommand, PersistentEntity.ReplyType<User> {
+        public final User user;
+
+        @JsonCreator
+        public DeleteUser(final User user) {
+            this.user = Preconditions.checkNotNull(user);
+        }
+
+        @Override
+        public int hashCode() {
+            return user.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object another) {
+            if(this == another) {
+                return true;
+            }
+            if(another instanceof AddNewUser) {
+                AddNewUser newUser = (AddNewUser) another;
+                return this.user.equals(newUser.user);
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                    .append("user", this.user)
+                    .toString();
+        }
+    }
+
+    @Immutable
+    @JsonDeserialize
+    final class CurrentState implements UserCommand, PersistentEntity.ReplyType<User> {}
 }

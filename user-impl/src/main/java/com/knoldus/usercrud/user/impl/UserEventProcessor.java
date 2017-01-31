@@ -4,6 +4,8 @@ import akka.Done;
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
 import com.knoldus.usercrud.user.impl.UserEvent.UserCreated;
+import com.knoldus.usercrud.user.impl.UserEvent.UserDeleted;
+import com.knoldus.usercrud.user.impl.UserEvent.UserUpdated;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
 import com.lightbend.lagom.javadsl.persistence.ReadSideProcessor;
 import com.lightbend.lagom.javadsl.persistence.cassandra.CassandraReadSide;
@@ -27,7 +29,10 @@ public class UserEventProcessor extends ReadSideProcessor<UserEvent> {
 
     private final CassandraSession session;
     private final CassandraReadSide readSide;
+
     private PreparedStatement writeUsers;
+    private PreparedStatement updateUsers;
+    private PreparedStatement deleteUsers;
 
     @Inject
     public UserEventProcessor(final CassandraSession session, final CassandraReadSide readSide) {
@@ -46,11 +51,17 @@ public class UserEventProcessor extends ReadSideProcessor<UserEvent> {
         LOGGER.info(" buildHandler method ... ");
         return readSide.<UserEvent>builder("users_offset")
                 .setGlobalPrepare(this::createTable)
-                .setPrepare(evtTag -> prepareWriteUser())
+                .setPrepare(evtTag -> prepareWriteUser()
+                        .thenCombine(prepareUpdateUser(), (d1, d2) -> Done.getInstance())
+                        .thenCombine(prepareDeleteUser(), (d1, d2) -> Done.getInstance())
+                )
                 .setEventHandler(UserCreated.class, this::processPostAdded)
+                .setEventHandler(UserUpdated.class, this::processPostUpdated)
+                .setEventHandler(UserDeleted.class, this::processPostDeleted)
                 .build();
     }
 
+    // Execute only once while application is start
     private CompletionStage<Done> createTable() {
         return session.executeCreateTable(
                 "CREATE TABLE IF NOT EXISTS users ( " +
@@ -58,6 +69,10 @@ public class UserEventProcessor extends ReadSideProcessor<UserEvent> {
         );
     }
 
+    /*
+    * START: Prepare statement for insert user values into users table.
+    * This is just creation of prepared statement, we will map this statement with our event
+    */
     private CompletionStage<Done> prepareWriteUser() {
         return session.prepare(
                 "INSERT INTO users (id, name, age) VALUES (?, ?, ?)"
@@ -71,6 +86,7 @@ public class UserEventProcessor extends ReadSideProcessor<UserEvent> {
         this.writeUsers = statement;
     }
 
+    // Bind prepare statement while UserCreate event is executed
     private CompletionStage<List<BoundStatement>> processPostAdded(UserCreated event) {
         BoundStatement bindWriteUser = writeUsers.bind();
         bindWriteUser.setString("id", event.user.id);
@@ -78,5 +94,53 @@ public class UserEventProcessor extends ReadSideProcessor<UserEvent> {
         bindWriteUser.setInt("age", event.user.age);
         return CassandraReadSide.completedStatements(Arrays.asList(bindWriteUser));
     }
+    /* ******************* END ****************************/
 
+    /* START: Prepare statement for update the data in users table.
+    * This is just creation of prepared statement, we will map this statement with our event
+    */
+    private CompletionStage<Done> prepareUpdateUser() {
+        return session.prepare(
+                "UPDATE users SET name=?, age=? WHERE id=?"
+        ).thenApply(ps -> {
+            setUpdateUsers(ps);
+            return Done.getInstance();
+        });
+    }
+
+    private void setUpdateUsers(PreparedStatement updateUsers) {
+        this.updateUsers = updateUsers;
+    }
+
+    private CompletionStage<List<BoundStatement>> processPostUpdated(UserUpdated event) {
+        BoundStatement bindWriteUser = updateUsers.bind();
+        bindWriteUser.setString("id", event.user.id);
+        bindWriteUser.setString("name", event.user.name);
+        bindWriteUser.setInt("age", event.user.age);
+        return CassandraReadSide.completedStatements(Arrays.asList(bindWriteUser));
+    }
+    /* ******************* END ****************************/
+
+    /* START: Prepare statement for delete the the user from table.
+    * This is just creation of prepared statement, we will map this statement with our event
+    */
+    private CompletionStage<Done> prepareDeleteUser() {
+        return session.prepare(
+                "DELETE FROM users WHERE id=?"
+        ).thenApply(ps -> {
+            setDeleteUsers(ps);
+            return Done.getInstance();
+        });
+    }
+
+    private void setDeleteUsers(PreparedStatement deleteUsers) {
+        this.deleteUsers = deleteUsers;
+    }
+
+    private CompletionStage<List<BoundStatement>> processPostDeleted(UserDeleted event) {
+        BoundStatement bindWriteUser = deleteUsers.bind();
+        bindWriteUser.setString("id", event.user.id);
+        return CassandraReadSide.completedStatements(Arrays.asList(bindWriteUser));
+    }
+    /* ******************* END ****************************/
 }
