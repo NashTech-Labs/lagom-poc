@@ -24,12 +24,85 @@ public interface UserEvent extends Jsonable, AggregateEvent<UserEvent> {
     @Immutable
     @JsonDeserialize
     final class UserCreated implements UserEvent {
-
         public final User user;
+        public final String eventId;
 
         @JsonCreator
-        public UserCreated(final User user) {
+        public UserCreated(final User user, final String eventId) {
             this.user = Preconditions.checkNotNull(user);
+            this.eventId = Preconditions.checkNotNull(eventId);
+        }
+
+        @Override
+        public int hashCode() {
+            return user.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object another) {
+            if(this == another) {
+                return true;
+            }
+            if(another instanceof UserCreated) {
+                UserCreated userCreated = (UserCreated) another;
+                return this.user.equals(userCreated.user);
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                    .append("user", this.user)
+                    .toString();
+        }
+    }
+
+    @Immutable
+    @JsonDeserialize
+    final class UserUpdated implements UserEvent {
+        public final User user;
+        public final String eventId;
+
+        public UserUpdated(final User user, final String eventId) {
+            this.user = Preconditions.checkNotNull(user);
+            this.eventId = Preconditions.checkNotNull(eventId);
+        }
+
+        @Override
+        public int hashCode() {
+            return user.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object another) {
+            if(this == another) {
+                return true;
+            }
+            if(another instanceof UserCreated) {
+                UserCreated userCreated = (UserCreated) another;
+                return this.user.equals(userCreated.user);
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                    .append("user", this.user)
+                    .toString();
+        }
+    }
+
+    @Immutable
+    @JsonDeserialize
+    final class UserDeleted implements UserEvent {
+        public final User user;
+        public final String eventId;
+
+        public UserDeleted(final User user, final String eventId) {
+            this.user = Preconditions.checkNotNull(user);
+            this.eventId = Preconditions.checkNotNull(eventId);
         }
 
         @Override

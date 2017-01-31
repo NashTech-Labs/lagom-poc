@@ -3,6 +3,9 @@ package com.knoldus.usercrud.user.impl;
 import akka.Done;
 import akka.NotUsed;
 import com.knoldus.usercrud.user.impl.UserCommand.AddNewUser;
+import com.knoldus.usercrud.user.impl.UserCommand.CurrentState;
+import com.knoldus.usercrud.user.impl.UserCommand.DeleteUser;
+import com.knoldus.usercrud.user.impl.UserCommand.UpdateUser;
 import com.knoldus.usercurd.user.api.User;
 import com.knoldus.usercurd.user.api.UserService;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
@@ -48,8 +51,38 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServiceCall<User, Done> newUser() {
         return user -> {
-            PersistentEntityRef<UserCommand> ref = persistentEntityRegistry.refFor(UserEntity.class, user.id);
+            PersistentEntityRef<UserCommand> ref = userEntityRef(user);
             return ref.ask(new AddNewUser(user));
         };
+    }
+
+    @Override
+    public ServiceCall<User, Done> updateUser() {
+        return user -> {
+            PersistentEntityRef<UserCommand> ref = userEntityRef(user);
+            return ref.ask(new UpdateUser(user));
+        };
+    }
+
+    @Override
+    public ServiceCall<NotUsed, User> delete(String id) {
+        return request -> {
+            User user = new User(id, "", -1);
+            PersistentEntityRef<UserCommand> ref = userEntityRef(user);
+            return ref.ask(new DeleteUser(user));
+        };
+    }
+
+    @Override
+    public ServiceCall<NotUsed, User> currentState(String id) {
+        return request -> {
+            User user = new User(id, "", -1);
+            PersistentEntityRef<UserCommand> ref = userEntityRef(user);
+            return ref.ask(new CurrentState());
+        };
+    }
+
+    private PersistentEntityRef<UserCommand> userEntityRef(User user) {
+        return persistentEntityRegistry.refFor(UserEntity.class, user.id);
     }
 }
