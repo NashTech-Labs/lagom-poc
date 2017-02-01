@@ -51,4 +51,9 @@ public class HelloServiceImpl implements HelloService {
 
   }
 
+  @Override
+  public ServiceCall<NotUsed, String> hi() {
+    return request ->
+ CompletableFuture.completedFuture("Hi, This is sample ApiGee URL");
+  }
 }

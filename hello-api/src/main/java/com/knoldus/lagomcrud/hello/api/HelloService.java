@@ -24,6 +24,7 @@ public interface HelloService extends Service {
    * Example: curl http://localhost:9000/api/hello/Alice
    */
   ServiceCall<NotUsed, String> hello(String id);
+  ServiceCall<NotUsed, String> hi();
 
 
   /**
@@ -37,7 +38,8 @@ public interface HelloService extends Service {
     // @formatter:off
     return named("hello").withCalls(
         pathCall("/api/hello/:id",  this::hello),
-        pathCall("/api/hello/:id", this::useGreeting)
+        pathCall("/api/hello/:id", this::useGreeting),
+        pathCall("/hi", this::hi)
       ).withAutoAcl(true);
     // @formatter:on
   }
