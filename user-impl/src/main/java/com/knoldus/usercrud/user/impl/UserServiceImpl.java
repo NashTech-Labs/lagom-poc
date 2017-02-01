@@ -3,7 +3,7 @@ package com.knoldus.usercrud.user.impl;
 import akka.Done;
 import akka.NotUsed;
 import com.knoldus.usercrud.user.impl.UserCommand.AddNewUser;
-import com.knoldus.usercrud.user.impl.UserCommand.CurrentState;
+import com.knoldus.usercrud.user.impl.UserCommand.UserCurrentState;
 import com.knoldus.usercrud.user.impl.UserCommand.DeleteUser;
 import com.knoldus.usercrud.user.impl.UserCommand.UpdateUser;
 import com.knoldus.usercurd.user.api.User;
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
         return request -> {
             User user = new User(id, "", -1);
             PersistentEntityRef<UserCommand> ref = userEntityRef(user);
-            return ref.ask(new CurrentState());
+            return ref.ask(new UserCurrentState());
         };
     }
 

@@ -1,5 +1,7 @@
 package com.knoldus.usercrud.user.impl;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.base.Preconditions;
 import com.knoldus.usercurd.user.api.User;
@@ -20,7 +22,8 @@ public class UserState implements CompressedJsonable {
     public final User user;
     public final String timestamp;
 
-    public UserState(final User user, final String timestamp){
+    @JsonCreator
+    public UserState(@JsonProperty("user") final User user, @JsonProperty("timestamp") final String timestamp){
         this.user = Preconditions.checkNotNull(user);
         this.timestamp = Preconditions.checkNotNull(timestamp);
     }
@@ -38,7 +41,7 @@ public class UserState implements CompressedJsonable {
         if(another instanceof UserState) {
             UserState state = (UserState) another;
             return Objects.equals(this.user, state.user) &&
-                    Objects.equals(this.timestamp, state.user);
+                    Objects.equals(this.timestamp, state.timestamp);
         }
         return false;
     }
