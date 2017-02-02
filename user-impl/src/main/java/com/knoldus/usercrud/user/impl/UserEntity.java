@@ -2,7 +2,7 @@ package com.knoldus.usercrud.user.impl;
 
 import akka.Done;
 import com.knoldus.usercrud.user.impl.UserCommand.AddNewUser;
-import com.knoldus.usercrud.user.impl.UserCommand.CurrentState;
+import com.knoldus.usercrud.user.impl.UserCommand.UserCurrentState;
 import com.knoldus.usercrud.user.impl.UserCommand.DeleteUser;
 import com.knoldus.usercrud.user.impl.UserCommand.UpdateUser;
 import com.knoldus.usercrud.user.impl.UserEvent.UserCreated;
@@ -53,7 +53,7 @@ public class UserEntity extends PersistentEntity<UserCommand, UserEvent, UserSta
             new UserState(initialUser, LocalDateTime.now().toString())
         );
 
-        behaviorBuilder.setReadOnlyCommandHandler(CurrentState.class, (cmd, ctx) ->
+        behaviorBuilder.setReadOnlyCommandHandler(UserCurrentState.class, (cmd, ctx) ->
             ctx.reply(state().user)
         );
 

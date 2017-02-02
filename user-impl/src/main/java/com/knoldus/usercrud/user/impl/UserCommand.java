@@ -2,6 +2,7 @@ package com.knoldus.usercrud.user.impl;
 
 import akka.Done;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.base.Preconditions;
 import com.knoldus.usercurd.user.api.User;
@@ -22,7 +23,7 @@ public interface UserCommand extends Jsonable {
         public final User user;
 
         @JsonCreator
-        public AddNewUser(final User user) {
+        public AddNewUser(@JsonProperty("user") final User user) {
             this.user = Preconditions.checkNotNull(user);
         }
 
@@ -57,7 +58,7 @@ public interface UserCommand extends Jsonable {
         public final User user;
 
         @JsonCreator
-        public UpdateUser(final User user) {
+        public UpdateUser(@JsonProperty("user") final User user) {
             this.user = Preconditions.checkNotNull(user);
         }
 
@@ -71,9 +72,9 @@ public interface UserCommand extends Jsonable {
             if(this == another) {
                 return true;
             }
-            if(another instanceof AddNewUser) {
-                AddNewUser newUser = (AddNewUser) another;
-                return this.user.equals(newUser.user);
+            if(another instanceof UpdateUser) {
+                UpdateUser updateUser = (UpdateUser) another;
+                return this.user.equals(updateUser.user);
             }
             return false;
         }
@@ -92,7 +93,7 @@ public interface UserCommand extends Jsonable {
         public final User user;
 
         @JsonCreator
-        public DeleteUser(final User user) {
+        public DeleteUser(@JsonProperty("user") final User user) {
             this.user = Preconditions.checkNotNull(user);
         }
 
@@ -106,9 +107,9 @@ public interface UserCommand extends Jsonable {
             if(this == another) {
                 return true;
             }
-            if(another instanceof AddNewUser) {
-                AddNewUser newUser = (AddNewUser) another;
-                return this.user.equals(newUser.user);
+            if(another instanceof DeleteUser) {
+                DeleteUser deleteUser = (DeleteUser) another;
+                return this.user.equals(deleteUser.user);
             }
             return false;
         }
@@ -123,5 +124,5 @@ public interface UserCommand extends Jsonable {
 
     @Immutable
     @JsonDeserialize
-    final class CurrentState implements UserCommand, PersistentEntity.ReplyType<User> {}
+    final class UserCurrentState implements UserCommand, PersistentEntity.ReplyType<User> {}
 }

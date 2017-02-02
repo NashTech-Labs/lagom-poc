@@ -1,6 +1,7 @@
 package com.knoldus.usercrud.user.impl;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.base.Preconditions;
 import com.knoldus.usercurd.user.api.User;
@@ -28,7 +29,7 @@ public interface UserEvent extends Jsonable, AggregateEvent<UserEvent> {
         public final String eventId;
 
         @JsonCreator
-        public UserCreated(final User user, final String eventId) {
+        public UserCreated(@JsonProperty("user") final User user, @JsonProperty("eventId") final String eventId) {
             this.user = Preconditions.checkNotNull(user);
             this.eventId = Preconditions.checkNotNull(eventId);
         }
@@ -64,7 +65,7 @@ public interface UserEvent extends Jsonable, AggregateEvent<UserEvent> {
         public final User user;
         public final String eventId;
 
-        public UserUpdated(final User user, final String eventId) {
+        public UserUpdated(@JsonProperty("user") final User user, @JsonProperty("eventId") final String eventId) {
             this.user = Preconditions.checkNotNull(user);
             this.eventId = Preconditions.checkNotNull(eventId);
         }
@@ -79,9 +80,9 @@ public interface UserEvent extends Jsonable, AggregateEvent<UserEvent> {
             if(this == another) {
                 return true;
             }
-            if(another instanceof UserCreated) {
-                UserCreated userCreated = (UserCreated) another;
-                return this.user.equals(userCreated.user);
+            if(another instanceof UserUpdated) {
+                UserUpdated userUpdated = (UserUpdated) another;
+                return this.user.equals(userUpdated.user);
             }
             return false;
         }
@@ -100,7 +101,7 @@ public interface UserEvent extends Jsonable, AggregateEvent<UserEvent> {
         public final User user;
         public final String eventId;
 
-        public UserDeleted(final User user, final String eventId) {
+        public UserDeleted(@JsonProperty("user") final User user, @JsonProperty("eventId") final String eventId) {
             this.user = Preconditions.checkNotNull(user);
             this.eventId = Preconditions.checkNotNull(eventId);
         }
@@ -115,9 +116,9 @@ public interface UserEvent extends Jsonable, AggregateEvent<UserEvent> {
             if(this == another) {
                 return true;
             }
-            if(another instanceof UserCreated) {
-                UserCreated userCreated = (UserCreated) another;
-                return this.user.equals(userCreated.user);
+            if(another instanceof UserDeleted) {
+                UserDeleted userDeleted = (UserDeleted) another;
+                return this.user.equals(userDeleted.user);
             }
             return false;
         }

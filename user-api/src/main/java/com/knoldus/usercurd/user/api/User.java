@@ -1,6 +1,7 @@
 package com.knoldus.usercurd.user.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -23,7 +24,7 @@ public final class User implements Serializable {
     public final int age;
 
     @JsonCreator
-    public User(final String id, final String name, final int age) {
+    public User(@JsonProperty("id") final String id, @JsonProperty("name") final String name, @JsonProperty("age") final int age) {
         this.id = Preconditions.checkNotNull(id);
         this.name = Preconditions.checkNotNull(name);
         this.age = age;
