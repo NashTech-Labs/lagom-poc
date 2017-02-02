@@ -2,10 +2,12 @@ package com.knoldus.usercrud.user.impl;
 
 import akka.Done;
 import akka.NotUsed;
-import com.knoldus.usercrud.user.impl.UserCommand.AddNewUser;
-import com.knoldus.usercrud.user.impl.UserCommand.UserCurrentState;
-import com.knoldus.usercrud.user.impl.UserCommand.DeleteUser;
-import com.knoldus.usercrud.user.impl.UserCommand.UpdateUser;
+import com.knoldus.usercrud.user.impl.commands.UserCommand;
+import com.knoldus.usercrud.user.impl.commands.UserCommand.CreateUser;
+import com.knoldus.usercrud.user.impl.commands.UserCommand.DeleteUser;
+import com.knoldus.usercrud.user.impl.commands.UserCommand.UpdateUser;
+import com.knoldus.usercrud.user.impl.commands.UserCommand.UserCurrentState;
+import com.knoldus.usercrud.user.impl.events.UserEventProcessor;
 import com.knoldus.usercurd.user.api.User;
 import com.knoldus.usercurd.user.api.UserService;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
@@ -19,7 +21,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
 /**
- * Created by harmeet on 30/1/17.
+ * Created by knoldus on 30/1/17.
  */
 public class UserServiceImpl implements UserService {
 
@@ -38,12 +40,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServiceCall<NotUsed, Optional<User>> user(String id) {
         return request -> {
-            CompletionStage<Optional<User>> userFuture = session.selectAll("SELECT * FROM users WHERE id = ?", id)
-                    .thenApply(rows ->
-                            rows.stream()
-                                    .map(row -> new User(row.getString("id"), row.getString("name"), row.getInt("age")))
-                                    .findFirst()
-                    );
+            CompletionStage<Optional<User>> userFuture =
+                    session.selectAll("SELECT * FROM users WHERE id = ?", id)
+                            .thenApply(rows ->
+                                    rows.stream()
+                                            .map(row -> User.builder().id(row.getString("id"))
+                                                    .name(row.getString("name")).age(row.getInt("age"))
+                                                    .build()
+                                            )
+                                            .findFirst()
+                            );
             return userFuture;
         };
     }
@@ -52,7 +58,7 @@ public class UserServiceImpl implements UserService {
     public ServiceCall<User, Done> newUser() {
         return user -> {
             PersistentEntityRef<UserCommand> ref = userEntityRef(user);
-            return ref.ask(new AddNewUser(user));
+            return ref.ask(CreateUser.builder().user(user).build());
         };
     }
 
@@ -60,29 +66,29 @@ public class UserServiceImpl implements UserService {
     public ServiceCall<User, Done> updateUser() {
         return user -> {
             PersistentEntityRef<UserCommand> ref = userEntityRef(user);
-            return ref.ask(new UpdateUser(user));
+            return ref.ask(UpdateUser.builder().user(user).build());
         };
     }
 
     @Override
     public ServiceCall<NotUsed, User> delete(String id) {
         return request -> {
-            User user = new User(id, "", -1);
+            User user = User.builder().id(id).build();
             PersistentEntityRef<UserCommand> ref = userEntityRef(user);
-            return ref.ask(new DeleteUser(user));
+            return ref.ask(DeleteUser.builder().user(user).build());
         };
     }
 
     @Override
-    public ServiceCall<NotUsed, User> currentState(String id) {
+    public ServiceCall<NotUsed, Optional<User>> currentState(String id) {
         return request -> {
-            User user = new User(id, "", -1);
+            User user = User.builder().id(id).build();
             PersistentEntityRef<UserCommand> ref = userEntityRef(user);
             return ref.ask(new UserCurrentState());
         };
     }
 
     private PersistentEntityRef<UserCommand> userEntityRef(User user) {
-        return persistentEntityRegistry.refFor(UserEntity.class, user.id);
+        return persistentEntityRegistry.refFor(UserEntity.class, user.getId());
     }
 }

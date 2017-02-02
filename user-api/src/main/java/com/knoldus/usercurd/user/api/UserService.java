@@ -13,7 +13,7 @@ import static com.lightbend.lagom.javadsl.api.Service.restCall;
 import static com.lightbend.lagom.javadsl.api.transport.Method.*;
 
 /**
- * Created by harmeet on 30/1/17.
+ * Created by knoldus on 30/1/17.
  */
 public interface UserService extends Service {
 
@@ -25,7 +25,7 @@ public interface UserService extends Service {
 
     ServiceCall<NotUsed, User> delete(String id);
 
-    ServiceCall<NotUsed, User> currentState(String id);
+    ServiceCall<NotUsed, Optional<User>> currentState(String id);
 
     @Override
     default Descriptor descriptor() {

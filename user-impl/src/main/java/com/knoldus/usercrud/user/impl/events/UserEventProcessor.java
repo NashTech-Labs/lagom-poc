@@ -1,11 +1,11 @@
-package com.knoldus.usercrud.user.impl;
+package com.knoldus.usercrud.user.impl.events;
 
 import akka.Done;
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
-import com.knoldus.usercrud.user.impl.UserEvent.UserCreated;
-import com.knoldus.usercrud.user.impl.UserEvent.UserDeleted;
-import com.knoldus.usercrud.user.impl.UserEvent.UserUpdated;
+import com.knoldus.usercrud.user.impl.events.UserEvent.UserCreated;
+import com.knoldus.usercrud.user.impl.events.UserEvent.UserDeleted;
+import com.knoldus.usercrud.user.impl.events.UserEvent.UserUpdated;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
 import com.lightbend.lagom.javadsl.persistence.ReadSideProcessor;
 import com.lightbend.lagom.javadsl.persistence.cassandra.CassandraReadSide;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.concurrent.CompletionStage;
 
 /**
- * Created by harmeet on 31/1/17.
+ * Created by knoldus on 31/1/17.
  */
 public class UserEventProcessor extends ReadSideProcessor<UserEvent> {
 
@@ -31,7 +31,6 @@ public class UserEventProcessor extends ReadSideProcessor<UserEvent> {
     private final CassandraReadSide readSide;
 
     private PreparedStatement writeUsers;
-    private PreparedStatement updateUsers;
     private PreparedStatement deleteUsers;
 
     @Inject
@@ -52,7 +51,6 @@ public class UserEventProcessor extends ReadSideProcessor<UserEvent> {
         return readSide.<UserEvent>builder("users_offset")
                 .setGlobalPrepare(this::createTable)
                 .setPrepare(evtTag -> prepareWriteUser()
-                        .thenCombine(prepareUpdateUser(), (d1, d2) -> Done.getInstance())
                         .thenCombine(prepareDeleteUser(), (d1, d2) -> Done.getInstance())
                 )
                 .setEventHandler(UserCreated.class, this::processPostAdded)
@@ -89,9 +87,9 @@ public class UserEventProcessor extends ReadSideProcessor<UserEvent> {
     // Bind prepare statement while UserCreate event is executed
     private CompletionStage<List<BoundStatement>> processPostAdded(UserCreated event) {
         BoundStatement bindWriteUser = writeUsers.bind();
-        bindWriteUser.setString("id", event.user.id);
-        bindWriteUser.setString("name", event.user.name);
-        bindWriteUser.setInt("age", event.user.age);
+        bindWriteUser.setString("id", event.getUser().getId());
+        bindWriteUser.setString("name", event.getUser().getName());
+        bindWriteUser.setInt("age", event.getUser().getAge());
         return CassandraReadSide.completedStatements(Arrays.asList(bindWriteUser));
     }
     /* ******************* END ****************************/
@@ -99,24 +97,11 @@ public class UserEventProcessor extends ReadSideProcessor<UserEvent> {
     /* START: Prepare statement for update the data in users table.
     * This is just creation of prepared statement, we will map this statement with our event
     */
-    private CompletionStage<Done> prepareUpdateUser() {
-        return session.prepare(
-                "UPDATE users SET name=?, age=? WHERE id=?"
-        ).thenApply(ps -> {
-            setUpdateUsers(ps);
-            return Done.getInstance();
-        });
-    }
-
-    private void setUpdateUsers(PreparedStatement updateUsers) {
-        this.updateUsers = updateUsers;
-    }
-
     private CompletionStage<List<BoundStatement>> processPostUpdated(UserUpdated event) {
-        BoundStatement bindWriteUser = updateUsers.bind();
-        bindWriteUser.setString("id", event.user.id);
-        bindWriteUser.setString("name", event.user.name);
-        bindWriteUser.setInt("age", event.user.age);
+        BoundStatement bindWriteUser = writeUsers.bind();
+        bindWriteUser.setString("id", event.getUser().getId());
+        bindWriteUser.setString("name", event.getUser().getName());
+        bindWriteUser.setInt("age", event.getUser().getAge());
         return CassandraReadSide.completedStatements(Arrays.asList(bindWriteUser));
     }
     /* ******************* END ****************************/
@@ -139,7 +124,7 @@ public class UserEventProcessor extends ReadSideProcessor<UserEvent> {
 
     private CompletionStage<List<BoundStatement>> processPostDeleted(UserDeleted event) {
         BoundStatement bindWriteUser = deleteUsers.bind();
-        bindWriteUser.setString("id", event.user.id);
+        bindWriteUser.setString("id", event.getUser().getId());
         return CassandraReadSide.completedStatements(Arrays.asList(bindWriteUser));
     }
     /* ******************* END ****************************/
