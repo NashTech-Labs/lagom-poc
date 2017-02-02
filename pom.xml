@@ -7,11 +7,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>hello-api</module>
-        <module>hello-impl</module>
-        <module>stream-api</module>
-        <module>stream-impl</module>
-        <module>integration-tests</module>
         <module>cassandra-config</module>
         <module>user-api</module>
         <module>user-impl</module>
@@ -159,7 +154,7 @@
                 <version>${mvn.compiler.version}</version>
                 <configuration>
                     <source>${jdk.version}</source>
-                    <target>1.8</target>
+                    <target>${jdk.version}</target>
                 </configuration>
             </plugin>
 
