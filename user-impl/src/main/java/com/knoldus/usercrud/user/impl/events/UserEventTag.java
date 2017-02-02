@@ -1,9 +1,9 @@
-package com.knoldus.usercrud.user.impl;
+package com.knoldus.usercrud.user.impl.events;
 
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
 
 /**
- * Created by harmeet on 31/1/17.
+ * Created by knoldus on 31/1/17.
  */
 public class UserEventTag {
 
