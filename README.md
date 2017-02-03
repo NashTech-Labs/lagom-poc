@@ -15,7 +15,7 @@ Building Reactive Java 8 application with Lagom framework. This is a classic CRU
 
 #### Application runs on port 9000 by default  `http://localhost:9000`
 
-### Json Formats for different Rest services are mentioned below :
+## Json Formats for different Rest services are mentioned below :
 
 #### 1. Create User:
 
