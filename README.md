@@ -1,6 +1,55 @@
 # lagom-poc
 
-Building Reactive Java 8 application with Lagom framework. This is a classic CRUD application.
+Building Reactive Java 8 application with Lagom framework. This is a classic CRUD application which persist events in Cassandra Db. Here, Cassandra is embed with Lagom framework so we don't need to install or start it. It will run when you start this application.
+
+## Prerequisites
+1. Java 1.8
+2. Maven 4.0
+
+## Getting the Project
+#### To clone the project follow the command
+`git clone git@github.com:sinaibay/spoke-api.git`
+
+#### Command to start the project
+`mvn lagom:runAll`
+
+#### Application runs on port 9000 by default  `http://localhost:9000`
+
+### Json Formats for different Rest services are mentioned below :
+
+#### 1. Create User:
+
+Route : `localhost:9000/api/user`
+
+Rawdata(json): 
+    {
+	"id": "1",
+	"name": "User 1",
+	"age": 24
+    }
+
+
+#### 2. Update User:
+
+Route : `localhost:9000/api/user`
+
+Rawdata(json): 
+    {
+	"id": "1",
+	"name": "User 1",
+	"age": 30
+    }
+    
+
+#### 3. Delete User:
+
+Route : `localhost:9000/api/user/:id`
+    
+
+#### 4. Get User details:
+
+Route : `localhost:9000/api/user/:id`
+
 
 ## Tools Integrated
 
