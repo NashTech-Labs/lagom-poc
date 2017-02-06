@@ -38,6 +38,12 @@
               <descriptors>
                 <descriptor>src/main/assembly/assembly.xml</descriptor>
               </descriptors>
+              <archive>
+                <manifest>
+                  <addClasspath>true</addClasspath>
+                  <mainClass>play.core.server.ProdServerStart</mainClass>
+                </manifest>
+              </archive>
             </configuration>
           </execution>
         </executions>

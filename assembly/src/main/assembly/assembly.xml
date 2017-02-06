@@ -1,7 +1,7 @@
 <assembly>
   <id>dist</id>
   <formats>
-    <format>zip</format>
+    <format>jar</format>
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
 
