@@ -93,7 +93,7 @@ public class UserEntityTest {
 
         assertThat(outcome.state().getUser(), is(equalTo(Optional.empty())));
 
-        assertThat(outcome.getReplies().get(0), is(equalTo(user)));
+        assertThat(outcome.getReplies().get(0), is(equalTo(Done.getInstance())));
         assertThat(outcome.issues().size(), is(equalTo(0)));
     }
 
