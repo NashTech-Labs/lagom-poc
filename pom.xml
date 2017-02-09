@@ -11,6 +11,7 @@
         <module>user-api</module>
         <module>user-impl</module>
         <module>flyway-maven</module>
+        <module>assembly</module>
     </modules>
 
     <properties>
