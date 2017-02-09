@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ServiceCall<NotUsed, User> delete(String id) {
+    public ServiceCall<NotUsed, Done> delete(String id) {
         return request -> {
             User user = User.builder().id(id).build();
             PersistentEntityRef<UserCommand> ref = userEntityRef(user);
