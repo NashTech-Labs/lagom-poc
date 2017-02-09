@@ -36,7 +36,7 @@ public interface UserCommand extends Jsonable {
     @Builder
     @JsonDeserialize
     @AllArgsConstructor
-    final class DeleteUser implements UserCommand, PersistentEntity.ReplyType<User> {
+    final class DeleteUser implements UserCommand, PersistentEntity.ReplyType<Done> {
         User user;
     }
 

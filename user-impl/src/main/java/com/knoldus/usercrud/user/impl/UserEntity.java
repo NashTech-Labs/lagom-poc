@@ -52,7 +52,7 @@ public class UserEntity extends PersistentEntity<UserCommand, UserEvent, UserSta
 
         behaviorBuilder.setCommandHandler(DeleteUser.class, (cmd, ctx) ->
                 ctx.thenPersist(UserDeleted.builder().user(cmd.getUser()).entityId(entityId()).build(),
-                        evt -> ctx.reply(cmd.getUser()))
+                        evt -> ctx.reply(Done.getInstance()))
         );
 
         behaviorBuilder.setEventHandler(UserDeleted.class, evt ->

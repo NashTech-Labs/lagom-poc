@@ -23,7 +23,7 @@ public interface UserService extends Service {
 
     ServiceCall<User, Done> updateUser();
 
-    ServiceCall<NotUsed, User> delete(String id);
+    ServiceCall<NotUsed, Done> delete(String id);
 
     ServiceCall<NotUsed, Optional<User>> currentState(String id);
 
