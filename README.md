@@ -8,7 +8,7 @@ Building Reactive Java 8 application with Lagom framework. This is a classic CRU
 
 ## Getting the Project
 #### To clone the project follow the command
-`git clone git@github.com:sinaibay/spoke-api.git`
+`git clone git@github.com:knoldus/lagom-poc.git`
 
 #### Command to start the project
 `mvn lagom:runAll`
@@ -19,7 +19,7 @@ Building Reactive Java 8 application with Lagom framework. This is a classic CRU
 
 #### 1. Create User:
 
-Route : `localhost:9000/api/user`
+Route(Method - POST) : `localhost:9000/api/user`
 
 Rawdata(json): 
     {
@@ -31,7 +31,7 @@ Rawdata(json):
 
 #### 2. Update User:
 
-Route : `localhost:9000/api/user`
+Route(Method - PUT) : `localhost:9000/api/user`
 
 Rawdata(json): 
     {
@@ -43,12 +43,12 @@ Rawdata(json):
 
 #### 3. Delete User:
 
-Route : `localhost:9000/api/user/:id`
+Route(Method - DELETE) : `localhost:9000/api/user/:id`
     
 
 #### 4. Get User details:
 
-Route : `localhost:9000/api/user/:id`
+Route(Method - GET) : `localhost:9000/api/user/:id`
 
 
 ## Tools Integrated
