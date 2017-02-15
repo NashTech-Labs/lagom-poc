@@ -65,6 +65,8 @@ SonarQube (formerly known as Sonar) is an open-source platform for continuous in
 #### Command to start SonarQube server
 `YOUR_DIR_PATH/sonarqube/bin/[OS]/sonar.sh console`
 
+or use Docker's `docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube:6.2-alpine` for quick local testing.
+
 #### SonarQube runs on port 9000 by default  `http://localhost:9000`
 
 #### Default username & password for administrator
