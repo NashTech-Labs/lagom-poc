@@ -11,6 +11,8 @@
     <module>user-api</module>
     <module>user-impl</module>
     <module>flyway-maven</module>
+    <module>helloworld-api</module>
+    <module>helloworld-impl</module>
   </modules>
 
   <properties>
@@ -160,6 +162,10 @@
         <groupId>com.lightbend.lagom</groupId>
         <artifactId>lagom-maven-plugin</artifactId>
         <version>${lagom.version}</version>
+        <configuration>
+          <kafkaAddress>localhost:9092</kafkaAddress>
+          <kafkaEnabled>false</kafkaEnabled>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
