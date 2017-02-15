@@ -91,7 +91,7 @@ Checkstyle is a development tool to help programmers write Java code that adhere
 
 #### Command to run checkstyle
 `mvn checkstyle:checkstyle`<br>
-`mvn checktyle:check`
+`mvn checkstyle:check`
 
 ### >> Findbugs
 FindBugs looks for bugs in Java programs. It is based on the concept of bug patterns.FindBugs uses static analysis to inspect Java bytecode for occurrences of bug patterns.FindBugs is a static code analysis tool which identifies problems found from Java code.
