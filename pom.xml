@@ -16,7 +16,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <lagom.version>1.2.0</lagom.version>
+    <lagom.version>1.2.2</lagom.version>
     <play.version>2.5.4</play.version>
     <jdk.version>1.8</jdk.version>
     <conductr.lib.name>lagom10-conductr-bundle-lib_2.11</conductr.lib.name>
@@ -160,6 +160,12 @@
         <groupId>com.lightbend.lagom</groupId>
         <artifactId>lagom-maven-plugin</artifactId>
         <version>${lagom.version}</version>
+        <configuration>
+          <unmanagedServices>
+            <cas_native>http://172.17.0.2:9042</cas_native>
+          </unmanagedServices>
+          <cassandraEnabled>false</cassandraEnabled>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
