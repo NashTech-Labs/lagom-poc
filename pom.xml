@@ -32,6 +32,7 @@
     <sonar.verison>3.2</sonar.verison>
     <pmd.version>3.7</pmd.version>
     <lombok>1.16.10</lombok>
+    <cassandraversion>http://localhost:9042</cassandraversion>
   </properties>
 
   <dependencyManagement>
@@ -131,6 +132,18 @@
         </sonar.host.url>
       </properties>
     </profile>
+    <profile>
+      <id>cassandraversion</id>
+      <activation>
+        <property>
+          <name>env.cassandraversion</name>
+        </property>
+      </activation>
+      <properties>
+        <!-- Override only if necessary -->
+        <cassandraversion>${env.cassandraversion}</cassandraversion>
+      </properties>
+    </profile>
   </profiles>
 
   <build>
@@ -162,7 +175,7 @@
         <version>${lagom.version}</version>
         <configuration>
           <unmanagedServices>
-            <cas_native>http://172.17.0.2:9042</cas_native>
+            <cas_native>${cassandraversion}</cas_native>
           </unmanagedServices>
           <cassandraEnabled>false</cassandraEnabled>
         </configuration>
