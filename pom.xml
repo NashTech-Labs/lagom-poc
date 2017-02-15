@@ -11,6 +11,8 @@
     <module>user-api</module>
     <module>user-impl</module>
     <module>flyway-maven</module>
+    <module>helloworld-api</module>
+    <module>helloworld-impl</module>
   </modules>
 
   <properties>
@@ -174,6 +176,8 @@
         <artifactId>lagom-maven-plugin</artifactId>
         <version>${lagom.version}</version>
         <configuration>
+          <kafkaAddress>localhost:9092</kafkaAddress>
+          <kafkaEnabled>false</kafkaEnabled>
           <unmanagedServices>
             <cas_native>${cassandraversion}</cas_native>
           </unmanagedServices>
