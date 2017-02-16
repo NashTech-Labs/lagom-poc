@@ -20,9 +20,7 @@ import com.knoldus.hello.api.HelloService;
   }
 
   private Done doSomethingWithTheMessage(GreetingMessage message) {
-    System.out.println(
-        "\n\n\n\n\n\n------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Message: "
-            + message);
+    System.out.println("Message :  " + message);
     return Done.getInstance();
   }
 

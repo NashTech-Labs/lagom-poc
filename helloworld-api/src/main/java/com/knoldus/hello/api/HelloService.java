@@ -17,7 +17,7 @@ public interface HelloService extends Service {
   /**
    * Example: curl http://localhost:9000/api/hello/Alice
    */
-  String GREETINGS_TOPIC = "himaniii";
+  String GREETINGS_TOPIC = "greeting";
   ServiceCall<NotUsed, String> hello(String id);
 
   /**
