@@ -117,3 +117,22 @@ PMD has additional rules to check for cyclomatic complexity, Npath complexity, e
 #### Command to generate PMD reports
 `mvn pmd:pmd`
 
+#### Steps to use Kafka-Docker
+Install Docker
+<p>Install docker-compose
+<p>Update docker-compose.yml with your docker host IP
+(KAFKA_ADVERTISED_HOST_NAME)
+<p>Start the cluster
+  <p>`$ docker-compose up`
+<p>To start a cluster with two broker
+  <p>`$ docker-compose scale kafka=2`
+<p>NOTE:This will start a single zookeeper instance and two Kafka instances. You can use docker-compose ps to show the running instances. If you want to add more Kafka brokers simply increase the value passed to docker-compose scale kafka=n
+<p>Starting the KAFKA SHELL
+   <p>$ `start-kafka-shell.sh [DOCKER_HOST_IP] [ZK_HOST:ZK_PORT]`
+   <p>for eg.- start-kafka-shell.sh 172.17.0.1 172.17.0.1:2181
+<p>To test your setup, start a shell, create a topic and start a producer:
+   <p>`$ $KAFKA_HOME/bin/kafka-topics.sh --create --topic [topic_name] --partitions 4 --zookeeper $ZK --replication-factor 2`
+<p>`$ $KAFKA_HOME/bin/kafka-topics.sh --describe --topic topic --zookeeper $ZK`
+<p>`$ $KAFKA_HOME/bin/kafka-console-producer.sh --topic=topic --broker-list=`broker-list.sh``
+<p>Start another shell and start a consumer:
+<p>`$ $KAFKA_HOME/bin/kafka-console-consumer.sh --topic=topic --zookeeper=$ZK`
