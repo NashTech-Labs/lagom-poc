@@ -1,6 +1,6 @@
 # lagom-poc
 
-Building Reactive Java 8 application with Lagom framework. This is a classic CRUD application which persist events in Cassandra Db. Here, Cassandra is embed with Lagom framework so we don't need to install or start it. It will run when you start this application.
+Building Reactive Java 8 application with Lagom framework. This is a classic CRUD application which persist events in Cassandra Db. Here we are using external Cassandra to persist events and external kafka for publishing and subscribing between microservices.
 
 ## Prerequisites
 1. Java 1.8
@@ -50,6 +50,11 @@ Route(Method - DELETE) : `localhost:9000/api/user/:id`
 
 Route(Method - GET) : `localhost:9000/api/user/:id`
 
+### Publish message to kafka topic `greetings`
+`curl -H "Content-Type: application/json" -X POST -d '{"message":"Hi"}' http://localhost:9000/api/hello/Bob`
+
+### Consume message from kafka topic
+The application subscribes to the topic `greetings` and dump out messages to standard output.
 
 ## Tools Integrated
 
@@ -111,3 +116,4 @@ PMD has additional rules to check for cyclomatic complexity, Npath complexity, e
 
 #### Command to generate PMD reports
 `mvn pmd:pmd`
+
