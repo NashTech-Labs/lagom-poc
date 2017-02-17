@@ -9,14 +9,9 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>helloworld-impl</artifactId>
+  <artifactId>common</artifactId>
 
   <dependencies>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>helloworld-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
     <dependency>
       <groupId>com.lightbend.lagom</groupId>
       <artifactId>lagom-javadsl-server_2.11</artifactId>
@@ -41,27 +36,21 @@
       <groupId>com.lightbend.lagom</groupId>
       <artifactId>lagom-javadsl-testkit_2.11</artifactId>
     </dependency>
+
     <dependency>
-      <groupId>com.lightbend.lagom</groupId>
-      <artifactId>lagom-javadsl-kafka-broker_2.11</artifactId>
-      <version>${lagom.version}</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.7</version>
     </dependency>
+
     <dependency>
-      <groupId>com.lightbend.lagom</groupId>
-      <artifactId>lagom-javadsl-broker_2.11</artifactId>
-      <version>${lagom.version}</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.7</version>
     </dependency>
-    <dependency>
-      <groupId>com.lightbend.lagom</groupId>
-      <artifactId>lagom-javadsl-kafka-client_2.11</artifactId>
-      <version>${lagom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.knoldus.lagomcrud</groupId>
-      <artifactId>common</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    </dependencies>
+
+  </dependencies>
+
   <build>
     <plugins>
       <plugin>
@@ -80,4 +69,5 @@
       </plugin>
     </plugins>
   </build>
+
 </project>
