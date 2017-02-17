@@ -131,8 +131,8 @@ Install Docker
    <p>$ `start-kafka-shell.sh [DOCKER_HOST_IP] [ZK_HOST:ZK_PORT]`</p>
    <p>for eg.- start-kafka-shell.sh 172.17.0.1 172.17.0.1:2181</p>
 <p>To test your setup, start a shell, create a topic and start a producer:</p>
-   <p>`$ $KAFKA_HOME/bin/kafka-topics.sh --create --topic [topic_name] --partitions 4 --zookeeper $ZK --replication-factor 2`</p>
-<p>`$ $KAFKA_HOME/bin/kafka-topics.sh --describe --topic topic --zookeeper $ZK`</p>
-<p>`$ $KAFKA_HOME/bin/kafka-console-producer.sh --topic=topic --broker-list=`broker-list.sh``</p>
+   <p>`$KAFKA_HOME/bin/kafka-topics.sh --create --topic [topic_name] --partitions 4 --zookeeper $ZK --replication-factor 2`</p>
+<p>`$KAFKA_HOME/bin/kafka-topics.sh --describe --topic topic --zookeeper $ZK`</p>
+<p>`$KAFKA_HOME/bin/kafka-console-producer.sh --topic=topic --broker-list=`broker-list.sh``</p>
 <p> Start another shell and start a consumer:</p>
-<p>`$ $KAFKA_HOME/bin/kafka-console-consumer.sh --topic=topic --zookeeper=$ZK`</p>
+<p>`$KAFKA_HOME/bin/kafka-console-consumer.sh --topic=topic --zookeeper=$ZK`</p>
