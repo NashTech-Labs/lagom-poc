@@ -13,6 +13,8 @@
     <module>flyway-maven</module>
     <module>helloworld-api</module>
     <module>helloworld-impl</module>
+    <module>microgateway-api</module>
+    <module>microgateway-impl</module>
   </modules>
 
   <properties>
