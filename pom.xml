@@ -7,7 +7,6 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>cassandra-config</module>
     <module>user-api</module>
     <module>user-impl</module>
     <module>flyway-maven</module>
@@ -24,7 +23,6 @@
     <lagom.version>1.2.2</lagom.version>
     <play.version>2.5.4</play.version>
     <jdk.version>1.8</jdk.version>
-    <conductr.lib.name>lagom10-conductr-bundle-lib_2.11</conductr.lib.name>
     <junit.version>4.12</junit.version>
     <flyway.verion>4.0.3</flyway.verion>
     <h2.version>1.4.191</h2.version>
@@ -102,11 +100,6 @@
         <artifactId>lombok</artifactId>
         <version>${lombok}</version>
         <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.typesafe.conductr</groupId>
-        <artifactId>${conductr.lib.name}</artifactId>
-        <version>1.4.7</version>
       </dependency>
       <!-- https://mvnrepository.com/artifact/org.sonarsource.scanner.maven/sonar-maven-plugin -->
       <dependency>
