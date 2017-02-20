@@ -1,5 +1,6 @@
-public interface RcclLoggerService {
+package com.knoldus.common;
 
+public interface RcclLoggerService {
     void debug(String message);
 
     void info(String message);
@@ -11,5 +12,4 @@ public interface RcclLoggerService {
     void error(Throwable throwable);
 
     void error(String message, Throwable throwable);
-
 }

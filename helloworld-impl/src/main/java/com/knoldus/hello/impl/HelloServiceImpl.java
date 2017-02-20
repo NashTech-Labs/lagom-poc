@@ -17,13 +17,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.inject.Inject;
 import java.util.Optional;
+import com.knoldus.common.*;
 
 /**
  * Implementation of the HelloService.
  */
 public class HelloServiceImpl implements HelloService {
 
-  private static final Logger log = LogManager.getLogger(HelloServiceImpl.class);
+  private static RcclLoggerService log = RcclLoggerFactory.getLogService(HelloServiceImpl.class.getName());
 
   private final PersistentEntityRegistry persistentEntityRegistry;
 
