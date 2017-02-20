@@ -116,4 +116,11 @@ public class MicroGatewayServiceImpl implements MicrogatewayService {
     }
     return messageResult;
   }
+
+  /**
+   * It returns the status of the micro service
+   */
+  @Override public ServiceCall<NotUsed, String> health() {
+    return request -> CompletableFuture.completedFuture("Health is up");
+  }
 }
