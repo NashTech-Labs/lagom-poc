@@ -35,6 +35,7 @@
     <pmd.version>3.7</pmd.version>
     <lombok>1.16.10</lombok>
     <cassandraversion>http://localhost:9042</cassandraversion>
+    <kafkaaddress>localhost:9092</kafkaaddress>
   </properties>
 
   <dependencyManagement>
@@ -141,6 +142,18 @@
         <cassandraversion>${env.cassandraversion}</cassandraversion>
       </properties>
     </profile>
+    <profile>
+      <id>kafkaaddress</id>
+      <activation>
+        <property>
+          <name>env.kafkaaddress</name>
+        </property>
+      </activation>
+      <properties>
+        <!-- Override only if necessary -->
+        <kafkaaddress>${env.kafkaaddress}</kafkaaddress>
+      </properties>
+    </profile>
   </profiles>
 
   <build>
@@ -171,7 +184,7 @@
         <artifactId>lagom-maven-plugin</artifactId>
         <version>${lagom.version}</version>
         <configuration>
-          <kafkaAddress>localhost:9092</kafkaAddress>
+          <kafkaAddress>${kafkaaddress}</kafkaAddress>
           <kafkaEnabled>false</kafkaEnabled>
           <unmanagedServices>
             <cas_native>${cassandraversion}</cas_native>
