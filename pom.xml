@@ -190,10 +190,10 @@
         <configuration>
           <kafkaAddress>${kafkaaddress}</kafkaAddress>
           <kafkaEnabled>false</kafkaEnabled>
-          <!--<unmanagedServices>
+          <unmanagedServices>
             <cas_native>${cassandraversion}</cas_native>
           </unmanagedServices>
-          <cassandraEnabled>false</cassandraEnabled>-->
+          <cassandraEnabled>false</cassandraEnabled>
         </configuration>
       </plugin>
       <plugin>
