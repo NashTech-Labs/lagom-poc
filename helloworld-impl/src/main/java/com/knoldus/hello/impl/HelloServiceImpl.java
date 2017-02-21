@@ -34,10 +34,7 @@ public class HelloServiceImpl implements HelloService {
 
   @Override public ServiceCall<NotUsed, String> hello(String id) {
     return request -> {
-      log.warn("hello service is called ");
-      log.info("hello service is called ");
-      log.debug("hello service is called ");
-      log.error("hello service is called ");
+      log.info("Service Called : hello");
       PersistentEntityRef<HelloCommand> ref = persistentEntityRegistry.refFor(HelloWorld.class, id);
       return ref.ask(new Hello(id, Optional.empty()));
     };
