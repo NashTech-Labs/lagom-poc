@@ -56,7 +56,12 @@
       <artifactId>lagom-javadsl-kafka-client_2.11</artifactId>
       <version>${lagom.version}</version>
     </dependency>
-  </dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    </dependencies>
   <build>
     <plugins>
       <plugin>
