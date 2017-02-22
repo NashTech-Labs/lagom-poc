@@ -25,14 +25,18 @@ public class MicroGatewayServiceImpl implements MicrogatewayService {
       Properties prop = new Properties();
       String fileName = "/application.conf";
       InputStream inputStream = this.getClass().getResourceAsStream(fileName);
-      String environmentUrl = "";
+      String environmentUrlHello = "";
+      String environmentUrlUser = "";
       try {
         if (inputStream != null) {
           prop.load(inputStream);
-          String gateway_localUrl = prop.getProperty("GATEWAY_URL");
+          String gateway_localUrl_hello = prop.getProperty("GATEWAY_URL_HELLO");
+          String gateway_localUrl_user = prop.getProperty("GATEWAY_URL_USER");
           Map<String, String> env = System.getenv();
-          environmentUrl = env.getOrDefault("GATEWAY_URL",
-              gateway_localUrl.substring(1, gateway_localUrl.length() - 1));
+          environmentUrlHello = env.getOrDefault("GATEWAY_URL_HELLO",
+                  gateway_localUrl_hello.substring(1, gateway_localUrl_hello.length() - 1));
+          environmentUrlUser = env.getOrDefault("GATEWAY_URL_USER",
+                  gateway_localUrl_user.substring(1, gateway_localUrl_user.length() - 1));
 
         } else {
           throw new FileNotFoundException(
@@ -42,9 +46,9 @@ public class MicroGatewayServiceImpl implements MicrogatewayService {
         ex.printStackTrace();
       }
 
-      Optional<String> userName = getUserName(id, environmentUrl);
+      Optional<String> userName = getUserName(id, environmentUrlUser);
       Optional<String> message = null;
-      message = getHelloMessage(userName.orElse(" Anonymous !!"), environmentUrl);
+      message = getHelloMessage(userName.orElse(" Anonymous !!"), environmentUrlHello);
       return CompletableFuture.completedFuture(message);
     };
   }
