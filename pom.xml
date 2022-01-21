@@ -25,7 +25,7 @@
     <jdk.version>1.8</jdk.version>
     <junit.version>4.12</junit.version>
     <flyway.verion>4.0.3</flyway.verion>
-    <h2.version>1.4.191</h2.version>
+    <h2.version>2.1.210</h2.version>
     <mvn.assembly.version>2.6</mvn.assembly.version>
     <mvn.compiler.version>3.5.1</mvn.compiler.version>
     <cobertura.verison>2.7</cobertura.verison>
